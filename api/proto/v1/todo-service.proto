@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/protobuf/timestamp.proto";
+
+// 用於管理待辦事項串列的服務
+service ToDoService {
+    // 創建新的待辦事項任務
+    rpc Create (CreateRequest) returns (CreateResponse) {}
+
+    // 讀取待辦事項任務
+    rpc Read(ReadRequest) returns (ReadResponse) {}
+
+    // 更新待辦事項任務
+    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+
+    // 刪除待辦事項任務
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+
+    // 讀取全部待辦事項任務
+    rpc ReadAll(ReadAllRequest) returns (ReadAllResponse) {}
+}
+
+// 請求資料以創建新的待辦事項任務
+message CreateRequest {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+    // 要添加的任務物體
+    ToDo toDo = 2;
+}
+
+// 我們要做的是Task
+message ToDo {
+    // 待辦事項任務的唯一整數識別符號
+    int64 id = 1;
+    // 任務的標題
+    string title = 2;
+    // 待辦事項任務的詳細說明
+    string description = 3;
+    // 提醒待辦任務的日期和時間
+    google.protobuf.Timestamp reminder = 4;
+}
+
+// 包含創建的待辦事項任務的資料
+message CreateResponse {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+    // 已創建任務的ID
+    int64 id = 2;
+}
+
+// 求資料讀取待辦事項任務
+message ReadRequest {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+
+    // 待辦事項任務的唯一整數識別符號
+    int64 id = 2;
+}
+
+// 包含ID請求中指定的待辦事項任務資料
+message ReadResponse {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+
+    // 按ID讀取的任務物體
+    ToDo toDo = 2;
+}
+
+// 請求資料以更新待辦事項任務
+message UpdateRequest {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+
+    // 要更新的任務物體
+    ToDo toDo = 2;
+}
+
+// 包含更新操作的狀態
+message UpdateResponse {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+
+    // 包含已更新的物體數量
+    // 在成功更新的情況下等於1
+    int64 updated = 2;
+}
+
+// 請求資料刪除待辦事項任務
+message DeleteRequest {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+
+    // 要刪除的待辦事項任務的唯一整數識別符號
+    int64 id = 2;
+}
+
+// 包含刪除操作的狀態
+message DeleteResponse {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+
+    // 包含已刪除的物體數量
+    // 成功刪除時等於1
+    int64 deleted = 2;
+}
+
+// 請求資料以讀取所有待辦事項任務
+message ReadAllRequest {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+}
+
+// 包含所有待辦事項任務的串列
+message ReadAllResponse {
+    // API版本控制：這是明確指定版本的最佳實踐
+    string api = 1;
+
+    repeated ToDo toDos = 2;
+}
